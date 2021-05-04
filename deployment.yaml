@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: message-backend
+  labels:
+    app: message-backend
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    protocol: TCP
+  selector:
+    app: message-backend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: message-backend
+spec:
+  selector:
+    matchLabels:
+      app: message-backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: message-backend
+    spec:
+      containers:
+      - name: message-backend
+        image: how2die/message-backend
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: Always
